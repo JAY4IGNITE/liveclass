@@ -81,8 +81,8 @@
       "properties": {
         "liveclass.serverUrl": {
           "type": "string",
-          "default": "https://liveclass-backend.onrender.com",
-          "description": "LiveClass server base URL (REST; the WebSocket URL is derived as ws(s)://host/ws)"
+          "default": "",
+          "description": "LiveClass server base URL (REST; the WebSocket URL is derived as ws(s)://host/ws). You MUST configure this to your live backend link."
         }
       }
     },

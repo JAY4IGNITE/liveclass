@@ -38,7 +38,12 @@ async def _broadcast_session_closed(session_id: uuid.UUID, reason: str, final: b
         "reason": reason,
         "final": final,
     }
-    await get_redis().publish(f"session:{session_id}:events", json.dumps(event))
+    try:
+        await get_redis().publish(f"session:{session_id}:events", json.dumps(event))
+    except Exception:
+        # Redis is unavailable — DB state is already persisted. Connected WebSocket
+        # clients will lose real-time notification, but the session state is correct.
+        pass
 
 
 async def _reclaim_session_state(session: SessionDep, session_id: uuid.UUID) -> None:
@@ -57,7 +62,11 @@ async def _reclaim_session_state(session: SessionDep, session_id: uuid.UUID) -> 
             f"doc:{doc_id}:dedup",
             f"doc:{doc_id}:snapshot",
         ]
-    await get_redis().delete(*keys)
+    try:
+        await get_redis().delete(*keys)
+    except Exception:
+        # Redis is unavailable — ephemeral state will expire naturally.
+        pass
 
 
 async def _require_owner(

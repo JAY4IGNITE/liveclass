@@ -55,6 +55,7 @@ export class ApiClient {
   ): Promise<T> {
     const headers: Record<string, string> = {
       "content-type": "application/json",
+      "x-liveclass-client": "vscode",
     };
     if (this.token) headers.authorization = `Bearer ${this.token}`;
     const res = await fetch(`${this.baseUrl}${path}`, {

@@ -34,7 +34,7 @@ testpaths = ["tests"]
 asyncio_mode = "auto"
 addopts = "-q"
 markers = [
-  "integration: requires Postgres/Redis (docker compose up --wait)",
+  "integration: requires Postgres/Redis",
   "websocket: exercises the live WebSocket gateway (subset of integration)",
 ]
 

@@ -12,7 +12,11 @@ export class WsTransport implements Transport {
   constructor(private readonly url: string) {}
 
   connect(): void {
-    const ws = new WebSocket(this.url);
+    const ws = new WebSocket(this.url, {
+      headers: {
+        "x-liveclass-client": "vscode",
+      },
+    });
     this.ws = ws;
     ws.on("open", () => {
       if (this.ws === ws) this.openCb?.();

@@ -504,5 +504,7 @@ async def ws_endpoint(websocket: WebSocket) -> None:
         pass
     except Exception:  # noqa: BLE001 - defensive: never leak a stack to the client
         logger.exception("unhandled gateway error")
+        with contextlib.suppress(Exception):
+            await conn._send_error("INTERNAL_ERROR", "internal server error")
     finally:
         await conn.cleanup()
